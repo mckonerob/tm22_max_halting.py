@@ -1,0 +1,22 @@
+name: ChatGPT Australia maritime map
+on:
+  push:
+    branches: [chatgpt-australia-maritime-map]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install geopandas shapely pyproj matplotlib pandas numpy pyogrio
+      - name: Build map
+        run: python australia_maritime_map.py --output-dir output --data-dir data
+      - uses: actions/upload-artifact@v4
+        with:
+          name: australia-maritime-map
+          path: output/
+          if-no-files-found: error
